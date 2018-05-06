@@ -1,4 +1,3 @@
-
 ###Capstone Project
 ##Dallas Open Data-Police Incidents
 #3/31/2018
@@ -7,14 +6,16 @@
 ## Install the required package with:
 ## install.packages("RSocrata")
 
-library("RSocrata")
+library(RSocrata)
 library(tidyr)
 library(stringr)
 library(readr)
 
 ###Install packages for mapping
 #install.packages("leaflet")
-library("leaflet")
+#install.packages("leaflet.extras")
+library(leaflet)
+library(leaflet.extras)
 
 
 #Use soDA URL to access Incident Data; set limit on number of rows per page to 500 for now
@@ -58,13 +59,25 @@ map_test <- leaflet() %>%
 map_test
 
 
-# Leaflet map
+### Leaflet map Examples
+# Provides a basic dot map of our sample
+# This map is interactive and has a popup for Modus Operandi or MO
 d <- leaflet() %>% setView(lng = -96.7970, lat = 32.7767, zoom = 10)
 d %>% addProviderTiles(providers$Stamen.Toner) %>%
   addCircleMarkers(lng = df1$Longitude,
     lat = df1$Latitude,
-    popup = df1$`Type of Location`,
+    popup = df1$mo,
     radius = 8,
     stroke = FALSE,
     fillOpacity = 0.75,
     color = "red")
+
+# Heatmap example
+# Detail of map function by API Author
+# https://github.com/bhaskarvk/leaflet.extras/blob/master/R/webGLHeatmap.R
+h <- leaflet() %>% setView(lng = -96.7970, lat = 32.7767, zoom = 10)
+h %>% addProviderTiles(providers$Stamen.Toner) %>%
+  addWebGLHeatmap(lng = df1$Longitude,
+    lat = df1$Latitude,
+    size = 3000,
+    opacity = 0.70)
