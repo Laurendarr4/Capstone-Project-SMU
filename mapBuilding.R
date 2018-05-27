@@ -53,10 +53,10 @@ rm(LatLon)
 rm(df_LatLon)
 
 ### Create leaflet map object to test using address as popup 
-map_test <- leaflet() %>% 
-  addTiles() %>% 
-  addMarkers(data = df1, lng= ~Longitude, lat= ~Latitude, popup = ~address)
-map_test
+#map_test <- leaflet() %>% 
+#  addTiles() %>% 
+#  addMarkers(data = df1, lng= ~Longitude, lat= ~Latitude, popup = ~address)
+#map_test
 
 # Break data into 2016 and 2017
 # We are using date 1, which is the date of the occurrence of
