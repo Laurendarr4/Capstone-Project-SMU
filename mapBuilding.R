@@ -75,8 +75,10 @@ d_2016 %>% addProviderTiles(providers$Stamen.Toner) %>%
     lat = df_2016$Latitude,
     popup = paste("MO: ",df_2016$mo, "<br>",
             "Premise: ",df_2016$premise, "<br>",
+            "Date: ",df_2016$date1, "<br>",
             "Day: ",df_2016$day1,
-            "Time: ", df_2016$time1),
+            "Time: ", df_2016$time1,
+            "Zip: ", df_2016$zipcode),
     radius = 5,
     stroke = FALSE,
     fillOpacity = 0.75,
@@ -87,7 +89,12 @@ d_2017 <- leaflet() %>% setView(lng = -96.7970, lat = 32.7767, zoom = 11)
 d_2017 %>% addProviderTiles(providers$Stamen.Toner) %>%
   addCircleMarkers(lng = df_2017$Longitude,
     lat = df_2017$Latitude,
-    popup = df_2017$mo,
+    popup = paste("MO: ",df_2017$mo, "<br>",
+      "Premise: ",df_2017$premise, "<br>",
+      "Date: ",df_2017$date1, "<br>",
+      "Day: ",df_2017$day1,
+      "Time: ", df_2017$time1,
+      "Zip: ", df_2017$zipcode),
     radius = 5,
     stroke = FALSE,
     fillOpacity = 0.75,
@@ -103,3 +110,10 @@ h %>% addProviderTiles(providers$Stamen.Toner) %>%
     lat = df1$Latitude,
     size = 400,
     opacity = 0.60)
+
+# Cluster Map Example
+c_2016 <- leaflet() %>% setView(lng = -96.7970, lat = 32.7767, zoom = 11)
+c_2016 %>% addProviderTiles(providers$Stamen.Toner) %>%
+  addMarkers(lng = df_2016$Longitude,
+    lat = df_2016$Latitude,
+    clusterOptions = markerClusterOptions())
