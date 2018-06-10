@@ -76,3 +76,8 @@ df1[df1$objattack == c("ATM",
 buildingTypes <- group_by(df1, locClass)
 summarise(buildingTypes, sites = n_distinct(incidentnum))
 
+# Check UCR Offense
+buildingTypes <- group_by(df1, ucroffense)
+summarise(buildingTypes, sites = n_distinct(incidentnum))
+
+# Clearly UCR is going to get us more results
