@@ -62,10 +62,13 @@ summarise(buildingTypes, sites = n_distinct(incidentnum))
 # We are using date 1, which is the date of the occurrence of
 # the incident
 # It would not appear that 2014 is within range
-df_2014 <- df1[ which(df1$year1=='2014'),]
-df_2015 <- df1[ which(df1$year1=='2015'),]
-df_2016 <- df1[ which(df1$year1=='2016'),]
-df_2017 <- df1[ which(df1$year1=='2017'),]
+# df_2014 <- df1[ which(df1$year1=='2014'),]
+df_2015 <- df1[ which(df1$year1=='2015'
+            & df1$ucroffense==c("BURGLARY-BUSINESS","BURGLARY-RESIDENCE")),]
+df_2016 <- df1[ which(df1$year1=='2016'
+            & df1$ucroffense==c("BURGLARY-BUSINESS","BURGLARY-RESIDENCE")),]
+df_2017 <- df1[ which(df1$year1=='2017' 
+            & df1$ucroffense==c("BURGLARY-BUSINESS","BURGLARY-RESIDENCE")),]
 
 
 # 2017 Dot Map
@@ -86,5 +89,6 @@ d_2017 %>% addProviderTiles(providers$Stamen.Toner) %>%
     radius = 5,
     stroke = FALSE,
     fillOpacity = 0.75,
-    color = pal(df_2017$ucroffense))
-
+    color = pal(df_2017$ucroffense))%>%
+  addLegend("bottomright", pal = pal, values = df_2017$ucroffense,
+    title = "2017 Dallas Burglaries")
