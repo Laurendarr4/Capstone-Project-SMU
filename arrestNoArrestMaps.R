@@ -13,6 +13,10 @@ library(readr)
 library(dplyr)
 library(leaflet)
 library(leaflet.extras)
+library(rgdal)
+library(rgeos)
+library(tigris)
+library(sp)
 
 #Use soDA URL to access Incident Data; set limit on number of rows per page to 500 for now
 url = "https://www.dallasopendata.com/resource/qqc2-eivj.csv?$where=offincident like '%BURGLARY%'"
@@ -106,3 +110,30 @@ sd(arrestZip$PercentArrested)
 # Almost 91% there is a lot of variation
 sd(arrestZip$PercentArrested)/ 
   mean(arrestZip$PercentArrested)*100
+
+### ZIP CODE MAPPING ###
+
+# US Census Bureau zip code shape files
+# Shape files are from TIGER = Topologically Integrated Geographic Encoding and Referencing
+# Use tigris package to read in
+# http://personal.tcu.edu/kylewalker/housing-price-maps-ggplot2.html
+# https://rpubs.com/brianhigh/kcchildvac  Leaflet and Tigris
+
+zips <- zctas(cb = TRUE)
+ctys <- counties('TX', cb = TRUE)
+dallas_metro <- ctys[ctys$NAME %in% c('Dallas', 'Collin', 'Denton'), ]
+
+over_zips <- bind_rows(over(dallas_metro, zips, returnList = TRUE))
+# Outline of all of the zips in Dallas
+dallas_zips <- spTransform(zips[zips$ZCTA5CE10 %in% over_zips$ZCTA5CE10, ], 
+  CRS("+init=epsg:26914"))
+
+cities <- places('TX', cb = TRUE)
+# Outline of zip boundtry
+dallas_cities <- spTransform(cities[cities$NAME == "Dallas", ], 
+  CRS("+init=epsg:26914"))
+plot(dallas_cities)
+
+d_Zips <- leaflet(dallas_zips) %>% setView(lng = -96.7970, lat = 32.7767, zoom = 11)
+d_Zips %>% addProviderTiles(providers$Stamen.Toner) %>%
+  addPolygons(data = dallas_zips)
