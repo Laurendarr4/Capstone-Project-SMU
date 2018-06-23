@@ -107,4 +107,17 @@ bCM_2017 %>% addProviderTiles(providers$Stamen.Toner) %>%
     fillOpacity = 0.75,
     color = pal(df2_2017$ucroffense))%>%
   addLegend("bottomright", pal = pal, values = df2_2017$ucroffense,
-    title = "2017 Dallas Burg ~ V&CM")
+    title = "2017 Dallas Burg ~ V&CM") %>%
+  addLayersControl(
+    baseGroups = df2_2017$month1,
+    options = layersControlOptions(collapse = FALSE)
+  )
+
+# Try mini chart don't think is going to work for this application
+# could have other functions
+bCM_17 <- leaflet() %>% setView(lng = -96.7970, lat = 32.7767, zoom = 11)
+bCM_17 %>% addProviderTiles(providers$Stamen.Toner) %>%
+  addMinicharts(
+    df2_2017$Longitude, df2_2017$Latitude,
+    add
+  )
