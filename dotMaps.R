@@ -70,14 +70,48 @@ df_2016 <- df1[ which(df1$year1=='2016'
 df_2017 <- df1[ which(df1$year1=='2017' 
             & df1$ucroffense==c("BURGLARY-BUSINESS","BURGLARY-RESIDENCE")),]
 
+# Create a palette
+pal <- colorFactor(c("#d95f02", "#1b9e77"), domain = c("BURGLARY-BUSINESS","BURGLARY-RESIDENCE"))
+
+# 2015 Map
+d_2015 <- leaflet() %>% setView(lng = -96.7970, lat = 32.7767, zoom = 11)
+d_2015 %>% addProviderTiles(providers$Stamen.Toner) %>%
+  addCircleMarkers(lng = df_2015$Longitude,
+    lat = df_2015$Latitude,
+    popup = paste("MO: ", df_2015$mo, "<br>",
+      "Premise: ", df_2015$premise, "<br>",
+      "Date: ", df_2015$date1, "<br>",
+      "Day: ", df_2015$day1,
+      "Time: ", df_2015$time1,
+      "Zip: ", df_2015$zipcode),
+    radius = 5,
+    stroke = FALSE,
+    fillOpacity = 0.75,
+    color = pal(df_2015$ucroffense))%>%
+  addLegend("bottomright", pal = pal, values = df_2015$ucroffense,
+    title = "2015 Dallas Burglaries")
+
+# 2016 Map
+d_2016 <- leaflet() %>% setView(lng = -96.7970, lat = 32.7767, zoom = 11)
+d_2016 %>% addProviderTiles(providers$Stamen.Toner) %>%
+  addCircleMarkers(lng = df_2016$Longitude,
+    lat = df_2016$Latitude,
+    popup = paste("MO: ", df_2016$mo, "<br>",
+      "Premise: ", df_2016$premise, "<br>",
+      "Date: ", df_2016$date1, "<br>",
+      "Day: ", df_2016$day1,
+      "Time: ", df_2016$time1,
+      "Zip: ", df_2016$zipcode),
+    radius = 5,
+    stroke = FALSE,
+    fillOpacity = 0.75,
+    color = pal(df_2016$ucroffense))%>%
+  addLegend("bottomright", pal = pal, values = df_2016$ucroffense,
+    title = "2016 Dallas Burglaries")
 
 # 2017 Dot Map
-
-# Create a palette
-pal <- colorFactor(c("#A0A0FF", "#FFA0A0"), domain = c("BURGLARY-BUSINESS","BURGLARY-RESIDENCE"))
-
 d_2017 <- leaflet() %>% setView(lng = -96.7970, lat = 32.7767, zoom = 11)
-d_2017 %>% addProviderTiles(providers$Stamen.Toner) %>%
+d_2017 %>% addProviderTiles(providers$OpenStreetMap.BlackAndWhite) %>%
   addCircleMarkers(lng = df_2017$Longitude,
     lat = df_2017$Latitude,
     popup = paste("MO: ", df_2017$mo, "<br>",
@@ -92,3 +126,38 @@ d_2017 %>% addProviderTiles(providers$Stamen.Toner) %>%
     color = pal(df_2017$ucroffense))%>%
   addLegend("bottomright", pal = pal, values = df_2017$ucroffense,
     title = "2017 Dallas Burglaries")
+
+# Base Layer Selection 2017
+d_2017a <- leaflet() %>% setView(lng = -96.7970, lat = 32.7767, zoom = 11)
+d_2017a %>% addTiles(group = "OSM (default)" ) %>% 
+  # Base Groups #
+  addProviderTiles(providers$OpenStreetMap.Mapnik, group = "Mapnik") %>%
+  addProviderTiles(providers$OpenStreetMap.BlackAndWhite, group = "Mapnik-B/W") %>%
+  addProviderTiles(providers$Stamen.Toner, group = "Toner") %>%
+  addProviderTiles(providers$Stamen.TonerLite, group = "Toner-Lite") %>%
+  addProviderTiles(providers$CartoDB.DarkMatter, group = "DarkMatter") %>%
+  addCircleMarkers(lng = df_2017$Longitude,
+    lat = df_2017$Latitude,
+    popup = paste("MO: ", df_2017$mo, "<br>",
+      "Premise: ", df_2017$premise, "<br>",
+      "Date: ", df_2017$date1, "<br>",
+      "Day: ", df_2017$day1,
+      "Time: ", df_2017$time1,
+      "Zip: ", df_2017$zipcode),
+    radius = 5,
+    stroke = FALSE,
+    fillOpacity = 0.75,
+    color = pal(df_2017$ucroffense))%>%
+  addLegend("bottomright", pal = pal, values = df_2017$ucroffense,
+    title = "2017 Dallas Burglaries") %>%
+  addLayersControl(
+    baseGroups = c("OSM (default)", 
+      "Mapnik", 
+      "Mapnik-B/W", 
+      "Toner", 
+      "Toner-Lite", 
+      "DarkMatter"),
+    options = layersControlOptions(collapsed = FALSE)
+  )
+
+
