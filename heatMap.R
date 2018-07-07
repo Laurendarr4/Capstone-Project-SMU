@@ -69,10 +69,11 @@ h3 <- leaflet() %>% setView(lng = -96.7970, lat = 32.7767, zoom = 12)
 h3 %>% addTiles(group = "OSM (default)" ) %>% 
   # Base Groups #
   addProviderTiles(providers$OpenStreetMap.Mapnik, group = "Mapnik") %>%
-  addProviderTiles(providers$OpenStreetMap.BlackAndWhite, group = "Mapnik-B/W") %>%
+  addProviderTiles(providers$OpenStreetMap.BlackAndWhite, group = "OSM-B/W") %>%
   addProviderTiles(providers$Stamen.Toner, group = "Toner") %>%
   addProviderTiles(providers$Stamen.TonerLite, group = "Toner-Lite") %>%
   addProviderTiles(providers$CartoDB.DarkMatter, group = "DarkMatter") %>%
+  addProviderTiles(providers$Esri.WorldImagery, group = "ESRI-Sat") %>%
   addWebGLHeatmap(lng = df_2016$Longitude,
     lat = df_2016$Latitude,
     size = 50, units = "px",
@@ -82,9 +83,60 @@ h3 %>% addTiles(group = "OSM (default)" ) %>%
   addLayersControl(
     baseGroups = c("OSM (default)", 
                   "Mapnik", 
-                  "Mapnik-B/W", 
+                  "OSM-B/W", 
                   "Toner", 
                   "Toner-Lite", 
-                  "DarkMatter"),
+                  "DarkMatter",
+                  "ESRI-Sat"),
+    options = layersControlOptions(collapsed = FALSE)
+  )
+
+# Low intensity
+h4 <- leaflet() %>% setView(lng = -96.7970, lat = 32.7767, zoom = 12)
+h4 %>% addTiles(group = "OSM (default)" ) %>% 
+  # Base Groups #
+  addProviderTiles(providers$OpenStreetMap.Mapnik, group = "Mapnik") %>%
+  addProviderTiles(providers$OpenStreetMap.BlackAndWhite, group = "Mapnik-B/W") %>%
+  addProviderTiles(providers$Stamen.Toner, group = "Toner") %>%
+  addProviderTiles(providers$Stamen.TonerLite, group = "Toner-Lite") %>%
+  addProviderTiles(providers$CartoDB.DarkMatter, group = "DarkMatter") %>%
+  addWebGLHeatmap(lng = df_2016$Longitude,
+    lat = df_2016$Latitude,
+    size = 50, units = "px",
+    intensity = .05,
+    gradientTexture = "skyline",
+    opacity = 0.60) %>%
+  addLayersControl(
+    baseGroups = c("OSM (default)", 
+      "Mapnik", 
+      "Mapnik-B/W", 
+      "Toner", 
+      "Toner-Lite", 
+      "DarkMatter"),
+    options = layersControlOptions(collapsed = FALSE)
+  )
+
+# High intensity
+h5 <- leaflet() %>% setView(lng = -96.7970, lat = 32.7767, zoom = 12)
+h5 %>% addTiles(group = "OSM (default)" ) %>% 
+  # Base Groups #
+  addProviderTiles(providers$OpenStreetMap.Mapnik, group = "Mapnik") %>%
+  addProviderTiles(providers$OpenStreetMap.BlackAndWhite, group = "Mapnik-B/W") %>%
+  addProviderTiles(providers$Stamen.Toner, group = "Toner") %>%
+  addProviderTiles(providers$Stamen.TonerLite, group = "Toner-Lite") %>%
+  addProviderTiles(providers$CartoDB.DarkMatter, group = "DarkMatter") %>%
+  addWebGLHeatmap(lng = df_2016$Longitude,
+    lat = df_2016$Latitude,
+    size = 50, units = "px",
+    intensity = .45,
+    gradientTexture = "skyline",
+    opacity = 0.60) %>%
+  addLayersControl(
+    baseGroups = c("OSM (default)", 
+      "Mapnik", 
+      "Mapnik-B/W", 
+      "Toner", 
+      "Toner-Lite", 
+      "DarkMatter"),
     options = layersControlOptions(collapsed = FALSE)
   )

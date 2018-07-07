@@ -93,7 +93,7 @@ d_2015 %>% addProviderTiles(providers$Stamen.Toner) %>%
 
 # 2016 Map
 d_2016 <- leaflet() %>% setView(lng = -96.7970, lat = 32.7767, zoom = 11)
-d_2016 %>% addProviderTiles(providers$Stamen.Toner) %>%
+d_2016 %>% addProviderTiles(providers$Stamen.TonerLite) %>%
   addCircleMarkers(lng = df_2016$Longitude,
     lat = df_2016$Latitude,
     popup = paste("MO: ", df_2016$mo, "<br>",
@@ -160,4 +160,38 @@ d_2017a %>% addTiles(group = "OSM (default)" ) %>%
     options = layersControlOptions(collapsed = FALSE)
   )
 
+# 2016 Heat Map Comaparsion Dot Map
 
+d_2016a <- leaflet() %>% setView(lng = -96.7970, lat = 32.7767, zoom = 11)
+d_2016a %>% addTiles(group = "OSM (default)" ) %>% 
+  # Base Groups #
+  addProviderTiles(providers$OpenStreetMap.Mapnik, group = "Mapnik") %>%
+  addProviderTiles(providers$OpenStreetMap.BlackAndWhite, group = "OSM-B/W") %>%
+  addProviderTiles(providers$Stamen.Toner, group = "Toner") %>%
+  addProviderTiles(providers$Stamen.TonerLite, group = "Toner-Lite") %>%
+  addProviderTiles(providers$CartoDB.DarkMatter, group = "DarkMatter") %>%
+  addProviderTiles(providers$Esri.WorldImagery, group = "ESRI-Sat") %>%
+  addCircleMarkers(lng = df_2016$Longitude,
+    lat = df_2016$Latitude,
+    popup = paste("MO: ", df_2016$mo, "<br>",
+      "Premise: ", df_2016$premise, "<br>",
+      "Date: ", df_2016$date1, "<br>",
+      "Day: ", df_2016$day1,
+      "Time: ", df_2016$time1,
+      "Zip: ", df_2016$zipcode),
+    radius = 4,
+    stroke = FALSE,
+    fillOpacity = 0.60,
+    color = "#42c5f4") %>%
+  #addLegend("bottomright", pal = pal, values = df_2017$ucroffense,
+    #title = "2017 Dallas Burglaries") %>%
+  addLayersControl(
+    baseGroups = c("OSM (default)", 
+      "Mapnik", 
+      "Mapnik-B/W", 
+      "Toner", 
+      "Toner-Lite", 
+      "DarkMatter",
+      "ESRI-Sat"),
+    options = layersControlOptions(collapsed = FALSE)
+  )
